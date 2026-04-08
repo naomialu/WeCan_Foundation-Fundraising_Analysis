@@ -1,0 +1,40 @@
+Project: Fundraising Data Analysis
+Tool: PostgreSQL
+
+Total Donations
+Select Sum(donation) As total_donation From donation_data
+
+Total Donations by Gender
+Select gender, Sum(donation) As total_donation From donation_data Group By gender
+
+Total Donation by Job Field
+Select job_field, Sum(donation) As total_donation 
+From donation_data Group By job_field Order By total_donation Desc
+
+Total Donations below $200
+Select Sum(donation) As total_donation, 
+Count (donation) As no_of_donation From donation_data Where donation < 200
+
+Total Donations above $200
+Select Sum(donation) As total_donation, 
+Count (donation) As no_of_donation From donation_data Where donation > 200
+
+Top 10 States with Lowest Contributions
+Select state, Sum(donation) As total_donation 
+From donation_data Group By state Order By total_donation Asc Limit 10
+
+Top 10 States with Highest Contributions
+Select state, Sum(donation) As total_donation 
+From donation_data Group By state Order By total_donation Desc Limit 10
+
+Total Donation and Frequency
+Select donor_data.donation_frequency, Sum(donation_data.donation) As total_donation
+From donor_data
+Join donation_data On donation_data.id = donation_data.id
+Group By donor_data.donation_frequency
+Order By total_donation Desc
+
+Cars driven by the Top 20 Highest Donors
+Select donor_data.id, donor_data.car, Sum(donation_data.donation) As total_donation
+From donor_data Join donation_data On donor_data.id = donation_data.id
+Group By donor_data.id, donor_data.car Order By total_donation Desc Limit 20
